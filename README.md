@@ -60,7 +60,7 @@ include ':app', ':trapyzlocate'
 
 Location Permission Requests (Targeting SDK > 23 only)
 
-In apps targeting Android SDK level 23 and above (6.0+), developers must explicitly request permissions from the user that Android deems “dangerous”, such as location. Since the Reveal Mobile SDK requires the “ACCESS_FINE_LOCATION” permission, implementers targeting SDK level 23+ must request this permission from the end users before the Reveal Mobile SDK can properly function. We suggest following Android’s guide to request permissions and handle the results here: http://developer.android.com/training/permissions/requesting.html.
+In apps targeting Android SDK level 23 and above (6.0+), developers must explicitly request permissions from the user that Android deems “dangerous”, such as location. Since the Reveal Mobile SDK requires the “ACCESS_FINE_LOCATION” permission, implementers targeting SDK level 23+ must request this permission from the end users before the trapyz Mobile SDK can properly function. We suggest following Android’s guide to request permissions and handle the results here: http://developer.android.com/training/permissions/requesting.html.
 
 ###Implement the following methods in your MainActivity###
 * Implement the following methods in your MainActivity
