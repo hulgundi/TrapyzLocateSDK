@@ -48,7 +48,7 @@ include ':app', ':trapyzlocate'
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.Manifest.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    
 ```
 
 ###Add ApiKey to Manifest ###
