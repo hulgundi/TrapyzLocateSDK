@@ -117,9 +117,12 @@ String[] permissions = new String[]{
     }
  
  
+ 
+ 
+ 
 ###Start Service in your onCreate Block###
 
-``` 
+
   	
  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
@@ -127,7 +130,6 @@ String[] permissions = new String[]{
             startService();
         }
 
-```
 
 
-*You can implement startService method in the onCreate block of your mainactivity and stopService method in the onStop or onDestroy block of your mainactivity
+
