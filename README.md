@@ -32,7 +32,7 @@ include ':app', ':trapyzlocate'
             android:exported="false"
             android:stopWithTask="false"
             android:process=":TrapyzLocationService"/>
-            />
+            
 ```
 
 ###Add Permissions to Manifest ###
@@ -46,6 +46,7 @@ include ':app', ':trapyzlocate'
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     
     
 ```
@@ -60,62 +61,73 @@ include ':app', ':trapyzlocate'
 ###Implement the following methods in your MainActivity###
 * Implement the following methods in your MainActivity
 ```
-
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                                     @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        final boolean isCoarseLocation = requestCode == PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION;
-        final boolean permissionGranted = grantResults[0] == PERMISSION_GRANTED;
-
-        if (isCoarseLocation && permissionGranted) {
-            Intent intent = new Intent(Intent.ACTION_SYNC, null, this, com.trapyz.trapyzlocatesdk.TrapyzLocationService.class);
-            startService(intent);
+String[] permissions = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,};
+    private boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p : permissions) {
+            result = ContextCompat.checkSelfPermission(this, p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 100);
+            return false;
+        } else {
+            startService();
+        }
+        return true;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == 100) {
+            boolean perGranted = true;
+            for (int count : grantResults) {
+                if (count != PackageManager.PERMISSION_GRANTED) {
+                    perGranted = false;
+                }
+            }
+            if (perGranted) {
+                startService();
+            } 
         }
     }
-
-    private void requestCoarseLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[] { ACCESS_COARSE_LOCATION },
-                    PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+    private void startService() {
+        TrapyzLocationService mSensorService=new TrapyzLocationService();
+        if (!isMyServiceRunning(mSensorService.getClass())) {
+            startService(new Intent(Intent.ACTION_SYNC, null, this,TrapyzLocationService.class));
+        }else {
+            stopService(new Intent(Intent.ACTION_SYNC, null, this,TrapyzLocationService.class));
+            if (!isMyServiceRunning(mSensorService.getClass())) {
+                startService(new Intent(Intent.ACTION_SYNC, null, this,TrapyzLocationService.class));
+            }
         }
     }
-
-    private boolean isFineOrCoarseLocationPermissionGranted() {
-        boolean isAndroidMOrHigher = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-        boolean isFineLocationPermissionGranted = isGranted(ACCESS_FINE_LOCATION);
-        boolean isCoarseLocationPermissionGranted = isGranted(ACCESS_COARSE_LOCATION);
-
-        return isAndroidMOrHigher && (isFineLocationPermissionGranted
-                || isCoarseLocationPermissionGranted);
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
-
-    private boolean isGranted(String permission) {
-        return ActivityCompat.checkSelfPermission(this, permission) == PERMISSION_GRANTED;
-    }
-
-```
-
+ 
+ 
 ###Start Service in your onCreate Block###
 
 ``` 
-  	if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Check Permissions Now
-            ActivityCompat.requestPermissions(this,
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE },
-                    0);
-        }
-
-        if (!isFineOrCoarseLocationPermissionGranted()) {
-            requestCoarseLocationPermission();
+  	
+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermissions();
+        } else {
+            startService();
         }
 
 ```
 
-or
-
-
-```
-        stopService(new Intent(this, com.trapyz.trapyzlocatesdk.TrapyzLocationService.class));
-```
 
 *You can implement startService method in the onCreate block of your mainactivity and stopService method in the onStop or onDestroy block of your mainactivity
