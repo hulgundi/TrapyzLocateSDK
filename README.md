@@ -116,15 +116,15 @@ String[] permissions = new String[]{
         return false;
     }
  
- 
- 
+``` 
  
  
 ###Start Service in your onCreate Block###
+```
   	
  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
         } else {
             startService();
         }
-
+```
