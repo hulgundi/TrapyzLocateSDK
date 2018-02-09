@@ -59,7 +59,7 @@ include ':app', ':trapyzlocate'
 ```
 
 ###Implement the following methods in your MainActivity###
-* Implement the following methods in your MainActivity
+
 ```
 String[] permissions = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -121,15 +121,10 @@ String[] permissions = new String[]{
  
  
 ###Start Service in your onCreate Block###
-
-
   	
  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions();
         } else {
             startService();
         }
-
-
-
 
