@@ -18,7 +18,7 @@ Download and extract or git clone this repository in the root directory of your 
 ```
 
 ### Settings.Gradle Configuration###
-*Add these dependencies in your App's build.gradle file
+*Add these dependencies in your App's settings.gradle file
 ```
 include ':app', ':trapyzlocate'
 
