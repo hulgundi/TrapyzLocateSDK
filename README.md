@@ -7,7 +7,7 @@ Download and extract or git clone this repository in the root directory of your 
 *Add these dependencies in your App's build.gradle file
 
 ```
-    compile 'com.android.support:appcompat-v7:26.+'
+    
     compile 'com.google.android.gms:play-services-gcm:11.0.2'
     compile 'com.google.android.gms:play-services-location:11.0.2'
     compile 'com.amitshekhar.android:android-networking:1.0.0'
@@ -46,8 +46,7 @@ include ':app', ':trapyzlocate'
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.Manifest.permission.READ_PHONE_STATE" />
+    
     
 ```
 
