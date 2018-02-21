@@ -31,7 +31,7 @@ include ':app', ':trapyzlocate'
             android:name= "com.trapyz.trapyzlocatesdk.TrapyzLocationService"
             android:exported="false"
             android:stopWithTask="false"
-            android:process=":TrapyzLocationService"/>
+            android:process=":trapyzlocationservice"/>
             
 ```
 
