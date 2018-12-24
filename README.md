@@ -102,12 +102,17 @@ String[] permissions = new String[]{
         }
     }
     
-    private void startService() {
-    if(isMyServiceRunning(com.trapyz.trapyzlocatesdk.TrapyzLocationService.class)) {
-        stopService(new Intent(Intent.ACTION_SYNC, null, this,TrapyzLocationService.class));
+private void startService() {
+    if (isMyServiceRunning(TrapyzLocationService.class)) {
+        stopService(new Intent(Intent.ACTION_SYNC, null, this, TrapyzLocationService.class));
     }
-    this.startService(new Intent(Intent.ACTION_SYNC, null, this,TrapyzLocationService.class));
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        Intent serviceintent=new Intent(Intent.ACTION_SYNC, null, this, TrapyzLocationService.class);
+        ContextCompat.startForegroundService(this,serviceintent);
+    }else {
+        this.startService(new Intent(Intent.ACTION_SYNC, null, this, TrapyzLocationService.class));
     }
+}
     
     
     private boolean isMyServiceRunning(Class<?> serviceClass) {
